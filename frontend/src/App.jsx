@@ -4,6 +4,7 @@ import axios from 'axios';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import Profile from './components/Profile';
 import ListingsPage from './pages/ListingsPage';
 import IssuesPage from './pages/IssuesPage';
 import ReportIssuePage from './pages/ReportIssuePage';
@@ -69,9 +70,10 @@ function App() {
 
           {/* Dashboard */}
           <Route path="/dashboard" element={<Dashboard user={user} setAuth={setUser} />} />
+          <Route path="/profile" element={<Profile user={user} setAuth={setUser} />} />
 
           {/* Feature Routes */}
-          <Route path="/listings" element={<ListingsPage />} />
+          <Route path="/listings" element={<ListingsPage user={user} />} />
           <Route path="/issues" element={<IssuesPage />} />
           <Route path="/report-issue" element={<ReportIssuePage />} />
           <Route path="/issues/:id" element={<IssueDetailPage />} />

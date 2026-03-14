@@ -114,11 +114,11 @@ const Register = ({ setAuth }) => {
   /* ── Styles ── */
   const pageStyle = {
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%)',
+    background: '#FFFBF9',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '40px 20px 60px',
+    padding: '60px 20px 80px',
   };
 
   const bentoWrap = {
@@ -132,25 +132,26 @@ const Register = ({ setAuth }) => {
 
   const bentoCard = (active, accent) => ({
     background: active ? accent : '#fff',
-    border: `2px solid ${active ? accent : '#e2e8f0'}`,
-    borderRadius: '18px',
-    padding: '32px 28px',
+    border: `1.5px solid ${active ? accent : '#F3F4F6'}`,
+    borderRadius: '24px',
+    padding: '40px 32px',
     cursor: 'pointer',
     textAlign: 'center',
-    transition: 'all 0.25s',
-    boxShadow: active ? `0 8px 30px ${accent}44` : '0 2px 10px rgba(0,0,0,0.06)',
-    transform: active ? 'translateY(-4px)' : 'translateY(0)',
+    transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+    boxShadow: active ? `0 12px 30px ${accent}22` : '0 4px 12px rgba(0,0,0,0.03)',
+    transform: active ? 'translateY(-6px)' : 'translateY(0)',
   });
 
   const formCard = {
     background: '#fff',
-    borderRadius: '20px',
-    padding: '36px 40px',
+    borderRadius: '24px',
+    padding: '44px 48px',
     width: '100%',
-    maxWidth: '560px',
-    boxShadow: '0 12px 40px rgba(0,0,0,0.10)',
-    marginTop: '32px',
-    animation: 'slideUp 0.3s ease',
+    maxWidth: '580px',
+    boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
+    marginTop: '40px',
+    animation: 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+    border: '1px solid #F3F4F6',
   };
 
   const labelStyle = {
@@ -190,8 +191,8 @@ const Register = ({ setAuth }) => {
     boxShadow: `0 4px 14px ${accent}55`,
   });
 
-  const VOL_COLOR = '#2563eb';
-  const ORG_COLOR = '#059669';
+  const VOL_COLOR = '#FF8C42';
+  const ORG_COLOR = '#FF6B6B';
 
   return (
     <div style={pageStyle}>

@@ -12,6 +12,8 @@ const jobRoutes = require('./routes/jobRoutes');
 const commentRoutes = require('./routes/commentRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 
+const applicationRoutes = require('./routes/applicationRoutes');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -28,6 +30,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/applications', applicationRoutes);
 
 // Basic Route for testing
 app.get('/', (req, res) => {

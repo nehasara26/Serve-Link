@@ -25,21 +25,26 @@ const Login = ({ setAuth }) => {
   };
 
   return (
-    <div className="container" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh'}}>
-      <div className="card" style={{width: '100%', maxWidth: '400px'}}>
-        <h2 className="text-center text-primary">Sign In</h2>
-        {errorMsg && <div style={{backgroundColor: '#fee2e2', color: '#b91c1c', padding: '10px', borderRadius: '4px', marginTop: '15px'}}>{errorMsg}</div>}
-        <form onSubmit={onSubmit} style={{marginTop: '20px'}}>
+    <div className="container" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '85vh', background: 'var(--bg-warm)'}}>
+      <div className="card" style={{width: '100%', maxWidth: '420px', padding: '48px 40px', border: '1px solid var(--border)'}}>
+        <h1 className="text-center" style={{fontSize: '2rem', marginBottom: '8px'}}>Sign In</h1>
+        <p className="text-center" style={{color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '32px'}}>Welcome back to Serve-Link</p>
+        
+        {errorMsg && <div className="error-banner" style={{marginBottom: '24px'}}>{errorMsg}</div>}
+        
+        <form onSubmit={onSubmit}>
           <div className="form-group">
-            <input name="email" type="email" required placeholder="Email address" onChange={onChange} />
+            <label className="form-label">Email</label>
+            <input name="email" type="email" required placeholder="name@company.com" onChange={onChange} />
           </div>
           <div className="form-group">
-            <input name="password" type="password" required placeholder="Password" onChange={onChange} />
+            <label className="form-label">Password</label>
+            <input name="password" type="password" required placeholder="••••••••" onChange={onChange} />
           </div>
-          <button type="submit" className="btn" style={{width: '100%'}}>Sign in</button>
+          <button type="submit" className="btn" style={{width: '100%', marginTop: '12px'}}>Sign in</button>
         </form>
-        <p style={{textAlign: 'center', marginTop: '16px', fontSize: '0.9rem'}}>
-          Don't have an account? <Link to="/register" style={{color: 'var(--primary)', fontWeight: '600'}}>Register</Link>
+        <p style={{textAlign: 'center', marginTop: '24px', fontSize: '14px', color: 'var(--text-secondary)'}}>
+          Don't have an account? <Link to="/register" style={{color: 'var(--primary)', fontWeight: '700', textDecoration: 'none'}}>Register now</Link>
         </p>
       </div>
     </div>

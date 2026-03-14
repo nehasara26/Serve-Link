@@ -2,27 +2,24 @@
    CSS Reset & Design Tokens
    =========================== */
 :root {
-  --primary: #2563eb;
-  --primary-dark: #1e40af;
-  --primary-light: #eff6ff;
-  --accent: #059669;
-  --accent-light: #ecfdf5;
-  --danger: #ef4444;
-  --warning: #f59e0b;
-  --bg-light: #f8fafc;
-  --text-dark: #1e293b;
-  --text-light: #64748b;
-  --white: #ffffff;
-  --border: #e2e8f0;
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --primary: #FF8C42;
+  --primary-gradient: linear-gradient(45deg, #FF8C42, #FF6B6B);
+  --accent: #FF6B6B;
+  --bg-warm: #FFFBF9;
+  --white: #FFFFFF;
+  --text-primary: #1F2937;
+  --text-secondary: #555555;
+  --border: #F3F4F6;
+  --shadow-subtle: 0 6px 20px rgba(0,0,0,0.06);
+  --radius: 16px;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-light);
-  color: var(--text-dark);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-warm);
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 * { box-sizing: border-box; }
@@ -33,14 +30,14 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px;
 }
 
 .card {
   background: var(--white);
-  border-radius: 10px;
-  padding: 24px;
-  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow-subtle);
   margin-bottom: 24px;
 }
 
@@ -48,113 +45,135 @@ body {
 .justify-between { justify-content: space-between; }
 .items-center { align-items: center; }
 .gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
 .text-center { text-align: center; }
-.text-primary { color: var(--primary); }
 
 /* ===========================
    Typography
    =========================== */
-h1, h2, h3, h4 { margin-top: 0; }
+h1, h2, h3, h4 { 
+  color: var(--text-primary);
+  margin-top: 0;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
 
 /* ===========================
    Forms
    =========================== */
-.form-group { margin-bottom: 18px; }
+.form-group { margin-bottom: 20px; }
 
 .form-label {
   display: block;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-dark);
-  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 input, select, textarea {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
   font-size: 15px;
-  color: var(--text-dark);
+  color: var(--text-primary);
   background: var(--white);
-  transition: border-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 4px rgba(255, 140, 66, 0.1);
 }
 
 /* ===========================
    Buttons
    =========================== */
 .btn {
-  background-color: var(--primary);
+  background: var(--primary-gradient);
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   display: inline-block;
-  transition: background 0.2s, transform 0.1s;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.2);
 }
-.btn:hover { background-color: var(--primary-dark); transform: translateY(-1px); }
+.btn:hover { 
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 140, 66, 0.3);
+  filter: brightness(1.1);
+}
 .btn:active { transform: translateY(0); }
-.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-.btn-sm { padding: 7px 14px; font-size: 13px; }
+.btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 10px; }
 
-.btn-danger { background-color: var(--danger); }
-.btn-danger:hover { background-color: #b91c1c; }
+.btn-danger { background: #fee2e2; color: #b91c1c; box-shadow: none; }
+.btn-danger:hover { background: #fecaca; color: #991b1b; }
 
-.btn-accent { background-color: var(--accent); }
-.btn-accent:hover { background-color: #047857; }
+.btn-accent { background: var(--accent); }
 
 .btn-outline {
   background: transparent;
   color: var(--primary);
-  border: 2px solid var(--primary);
+  border: 1.5px solid var(--primary);
+  box-shadow: none;
 }
-.btn-outline:hover { background: var(--primary); color: white; }
+.btn-outline:hover { 
+  background: rgba(255, 140, 66, 0.05);
+  transform: translateY(-2px);
+}
 
 /* ===========================
    Navbar
    =========================== */
 .navbar {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-  color: white;
-  padding: 14px 28px;
+  background: var(--white);
+  color: var(--text-primary);
+  padding: 16px 48px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 0 var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
 .nav-link {
-  color: rgba(255,255,255,0.9);
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 14px;
-  font-weight: 500;
-  padding: 5px 10px;
-  border-radius: 4px;
-  transition: background 0.2s;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
-.nav-link:hover { background: rgba(255,255,255,0.15); }
+.nav-link:hover { 
+  background: var(--bg-warm);
+  color: var(--primary);
+}
 
 /* ===========================
    Dashboard Grid
    =========================== */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 32px;
+}
+
+@media (max-width: 992px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {

@@ -392,15 +392,18 @@ input:focus, select:focus, textarea:focus {
 .job-card {
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: var(--shadow);
-  transition: box-shadow 0.2s, transform 0.15s;
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-subtle);
+  transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
-.job-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.job-card:hover { 
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
 
 .job-card-header {
   display: flex;
@@ -411,45 +414,54 @@ input:focus, select:focus, textarea:focus {
 
 .job-title {
   margin: 0 0 4px;
-  font-size: 16px;
-  color: var(--text-dark);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 .job-org {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .badge {
-  padding: 3px 10px;
-  border-radius: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   white-space: nowrap;
   flex-shrink: 0;
 }
-.badge-platform { background: #ecfdf5; color: #065f46; }
-.badge-scraped { background: #fef3c7; color: #92400e; }
+.badge-platform { background: #FFF7F2; color: var(--primary); }
+.badge-scraped { background: #FFF1F1; color: var(--accent); }
 
 .job-meta {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+}
+.job-meta-item { 
+  font-size: 13px; 
+  color: var(--text-secondary); 
+  display: flex;
+  align-items: center;
   gap: 6px;
 }
-.job-meta-item { font-size: 13px; color: var(--text-light); }
 
 .experience-badge {
   display: inline-block;
-  padding: 3px 10px;
-  border-radius: 10px;
+  padding: 4px 12px;
+  border-radius: 8px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   width: fit-content;
 }
-.exp-required { background: #fef2f2; color: #991b1b; }
-.exp-none { background: var(--accent-light); color: #065f46; }
+.exp-required { background: #F3F4F6; color: var(--text-primary); }
+.exp-none { background: #f0fdf4; color: #166534; }
 
 .job-description {
   font-size: 13px;

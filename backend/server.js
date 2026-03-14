@@ -8,13 +8,16 @@ const organizationRoutes = require('./routes/organizationRoutes');
 const issueRoutes = require('./routes/issueRoutes');
 const surveyRoutes = require('./routes/surveyRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
+const jobRoutes = require('./routes/jobRoutes');
+const commentRoutes = require('./routes/commentRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' })); // Higher limit for base64 image uploads
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -22,22 +25,25 @@ app.use('/api/organizations', organizationRoutes);
 app.use('/api/issues', issueRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Basic Route for testing
 app.get('/', (req, res) => {
-  res.send('API is running...');
+  res.send('Serve-Link API is running...');
 });
 
 // Database Connection
 try {
   const serviceAccount = require('./serviceAccountKey.json');
-  
+
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
-  
-  console.log('Firebase Admin SDK conceptually initialized (Connected to Firestore via serviceAccountKey.json)');
-  
+
+  console.log('Firebase Admin SDK initialized (Connected to Firestore)');
+
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });

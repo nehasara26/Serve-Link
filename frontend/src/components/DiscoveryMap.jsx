@@ -1,72 +1,141 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { Link } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
-import axios from 'axios';
 import L from 'leaflet';
 
-// Fix for default Leaflet marker icons in React
+// Fix for default Leaflet marker icons in React/Vite
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 let DefaultIcon = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const DiscoveryMap = () => {
-  const [orgs, setOrgs] = useState([]);
-  const [loading, setLoading] = useState(true);
+// Hardcoded NGO markers for the Kochi/Ernakulam area
+const NGO_MARKERS = [
+  {
+    id: 'karunalayam',
+    name: 'Karunalayam Palliative Care',
+    lat: 9.9312,
+    lng: 76.2673,
+    tags: ['Healthcare', 'Elderly Care', 'Palliative'],
+    area: 'Ernakulam'
+  },
+  {
+    id: 'hope_orphanage',
+    name: 'Hope Orphanage Trust',
+    lat: 9.9816,
+    lng: 76.2999,
+    tags: ['Child Welfare', 'Education'],
+    area: 'Kakkanad'
+  },
+  {
+    id: 'fhc_kakkanad',
+    name: 'Family Health Centre Kakkanad',
+    lat: 10.0161,
+    lng: 76.3397,
+    tags: ['Healthcare', 'Medical'],
+    area: 'Kakkanad'
+  },
+  {
+    id: 'helping_hands',
+    name: 'Helping Hands Foundation',
+    lat: 9.9667,
+    lng: 76.2800,
+    tags: ['Food', 'Shelter', 'Homeless'],
+    area: 'Vyttila'
+  },
+  {
+    id: 'care_shelter',
+    name: 'Care Shelter NGO',
+    lat: 9.9450,
+    lng: 76.2450,
+    tags: ["Women's Safety", 'Counselling'],
+    area: 'Edappally'
+  }
+];
 
-  // Default center (can be user's actual location if requested)
-  const defaultCenter = [51.505, -0.09]; 
+// Component to re-center map when user location is found
+const RecenterMap = ({ center }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (center) map.setView(center, 13);
+  }, [center, map]);
+  return null;
+};
+
+const DiscoveryMap = () => {
+  // Default center: Kochi, Kerala
+  const [userLocation, setUserLocation] = useState(null);
+  const defaultCenter = [9.9312, 76.2673]; // Ernakulam
 
   useEffect(() => {
-    const fetchNearbyOrgs = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        // Fetch orgs near the default center for demo purposes
-        const res = await axios.get(`http://localhost:5000/api/organizations/nearby?lng=${defaultCenter[1]}&lat=${defaultCenter[0]}&radius=100000`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setOrgs(res.data);
-      } catch (err) {
-        console.error('Failed to fetch orgs for map', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNearbyOrgs();
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setUserLocation([pos.coords.latitude, pos.coords.longitude]);
+        },
+        () => {
+          // Permission denied or error — stay on Kochi default
+          console.info('Geolocation unavailable, using default Kochi center.');
+        },
+        { timeout: 5000 }
+      );
+    }
   }, []);
 
-  if (loading) return <div className="h-full flex items-center justify-center text-gray-500">Loading Map Data...</div>;
+  const mapCenter = userLocation || defaultCenter;
 
   return (
-    <MapContainer center={defaultCenter} zoom={11} className="h-full w-full rounded-lg z-0">
+    <MapContainer center={mapCenter} zoom={12} className="h-full w-full rounded-lg z-0" style={{ height: '100%', width: '100%' }}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {orgs.map(org => (
-        org.location?.coordinates && (
-          <Marker 
-            key={org._id} 
-            // Leaflet expects [lat, lng], MongoDB stores [lng, lat]
-            position={[org.location.coordinates[1], org.location.coordinates[0]]}
-          >
-            <Popup>
-              <div className="text-sm">
-                <h3 className="font-bold text-blue-800 text-base">{org.name}</h3>
-                <p className="mt-1 text-gray-600">{org.description || 'No description provided.'}</p>
-                <a href={`mailto:${org.contactEmail}`} className="text-blue-500 hover:underline mt-2 inline-block">Contact NGO</a>
+      <RecenterMap center={userLocation} />
+
+      {/* User Location Marker */}
+      {userLocation && (
+        <Marker position={userLocation}>
+          <Popup>
+            <strong>📍 Your Location</strong>
+          </Popup>
+        </Marker>
+      )}
+
+      {/* Hardcoded NGO Markers */}
+      {NGO_MARKERS.map(ngo => (
+        <Marker key={ngo.id} position={[ngo.lat, ngo.lng]}>
+          <Popup>
+            <div style={{ minWidth: '180px' }}>
+              <strong style={{ fontSize: '14px', color: '#1e40af' }}>{ngo.name}</strong>
+              <p style={{ margin: '4px 0', fontSize: '12px', color: '#64748b' }}>📍 {ngo.area}</p>
+              <div style={{ marginBottom: '8px' }}>
+                {ngo.tags.map(tag => (
+                  <span key={tag} style={{
+                    display: 'inline-block', background: '#eff6ff', color: '#1e40af',
+                    fontSize: '11px', padding: '2px 6px', borderRadius: '10px', marginRight: '4px', marginBottom: '2px'
+                  }}>
+                    {tag}
+                  </span>
+                ))}
               </div>
-            </Popup>
-          </Marker>
-        )
+              <Link
+                to="/listings"
+                style={{ fontSize: '13px', color: '#2563eb', textDecoration: 'none', fontWeight: '600' }}
+              >
+                View Job Listings →
+              </Link>
+            </div>
+          </Popup>
+        </Marker>
       ))}
     </MapContainer>
   );

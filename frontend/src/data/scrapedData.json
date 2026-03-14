@@ -1,0 +1,79 @@
+[
+  {
+    "id": "scraped_001",
+    "title": "Field Health Worker",
+    "orgName": "Karunalayam Palliative Care",
+    "location": "Ernakulam, Kerala",
+    "deadline": "2026-04-15",
+    "experienceRequired": true,
+    "description": "Assist in home visits and palliative care for terminally ill patients in rural areas.",
+    "source": "scraped",
+    "websiteUrl": "https://karunalayam.org"
+  },
+  {
+    "id": "scraped_002",
+    "title": "Child Education Volunteer",
+    "orgName": "Hope Orphanage Trust",
+    "location": "Kakkanad, Kochi",
+    "deadline": "2026-05-01",
+    "experienceRequired": false,
+    "description": "Teach primary school subjects and mentor children aged 6–14 at the orphanage.",
+    "source": "scraped",
+    "websiteUrl": "https://hopeorphanage.in"
+  },
+  {
+    "id": "scraped_003",
+    "title": "Medical Camp Coordinator",
+    "orgName": "Family Health Centre Kakkanad",
+    "location": "Kakkanad, Kochi",
+    "deadline": "2026-04-20",
+    "experienceRequired": true,
+    "description": "Coordinate monthly free medical camps for low-income communities.",
+    "source": "scraped",
+    "websiteUrl": "https://fhckakkanad.org"
+  },
+  {
+    "id": "scraped_004",
+    "title": "Food Distribution Driver",
+    "orgName": "Helping Hands Foundation",
+    "location": "Vyttila, Kochi",
+    "deadline": "2026-04-30",
+    "experienceRequired": false,
+    "description": "Drive and distribute meals to homeless individuals and daily wage workers.",
+    "source": "scraped",
+    "websiteUrl": "https://helpinghandskochi.org"
+  },
+  {
+    "id": "scraped_005",
+    "title": "Women Counsellor",
+    "orgName": "Care Shelter NGO",
+    "location": "Edappally, Kochi",
+    "deadline": "2026-05-10",
+    "experienceRequired": true,
+    "description": "Provide emotional support and counselling to women survivors of domestic abuse.",
+    "source": "scraped",
+    "websiteUrl": "https://careshelterkochi.org"
+  },
+  {
+    "id": "scraped_006",
+    "title": "Tree Planting Drive Organiser",
+    "orgName": "Green Kochi Initiative",
+    "location": "Thripunithura, Kochi",
+    "deadline": "2026-04-22",
+    "experienceRequired": false,
+    "description": "Organise and lead tree planting events with local schools on Earth Day.",
+    "source": "scraped",
+    "websiteUrl": "https://greenkochi.org"
+  },
+  {
+    "id": "scraped_007",
+    "title": "Elderly Companion Visitor",
+    "orgName": "Silver Years Trust",
+    "location": "Fort Kochi, Kochi",
+    "deadline": "2026-05-30",
+    "experienceRequired": false,
+    "description": "Make weekly visits to elderly residents in old-age homes to provide companionship.",
+    "source": "scraped",
+    "websiteUrl": "https://silveryearskochi.org"
+  }
+]

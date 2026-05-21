@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { Building2, MessageSquare, ArrowUp, Plus } from 'lucide-react';
+import Navbar from '../components/Navbar';
 
-const IssuesPage = () => {
+const IssuesPage = ({ user, setAuth }) => {
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [pulsingIds, setPulsingIds] = useState(new Set());
   const navigate = useNavigate();
 
   // Generate a stable client key for anonymous upvoting
@@ -41,6 +44,11 @@ const IssuesPage = () => {
         { clientKey },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
+      // Button pulse
+      setPulsingIds(prev => new Set(prev).add(issueId));
+      setTimeout(() => {
+        setPulsingIds(prev => { const n = new Set(prev); n.delete(issueId); return n; });
+      }, 500);
       // Update issue in state without full re-fetch
       setIssues(prev =>
         prev.map(issue =>
@@ -57,19 +65,8 @@ const IssuesPage = () => {
   const clientKey = getClientKey();
 
   return (
-    <div>
-      {/* Navbar */}
-      <nav className="navbar">
-        <h1 style={{ margin: 0 }}>🗣️ Community Issues</h1>
-        <div className="flex gap-4 items-center">
-          <Link to="/dashboard" className="btn btn-sm" style={{ background: 'rgba(255,255,255,0.2)', border: '1px solid white' }}>
-            ← Dashboard
-          </Link>
-          <Link to="/report-issue" className="btn btn-sm btn-accent">
-            + Report Issue
-          </Link>
-        </div>
-      </nav>
+    <div className="app-container bg-aura-forum">
+      <Navbar user={user} setAuth={setAuth} />
 
       <div className="container" style={{ maxWidth: '800px' }}>
         <div className="page-subheader">
@@ -90,7 +87,7 @@ const IssuesPage = () => {
             {issues.map((issue, idx) => {
               const hasUpvoted = issue.upvotes?.includes(clientKey);
               return (
-                <div key={issue.id} className="issue-feed-card">
+                <div key={issue.id} id={`issue-card-${issue.id}`} className="bento-card">
                   {/* Rank badge for top 3 */}
                   {idx < 3 && (
                     <span className="rank-badge">#{idx + 1}</span>
@@ -101,14 +98,14 @@ const IssuesPage = () => {
                       <Link to={`/issues/${issue.id}`} className="issue-feed-title">
                         {issue.title}
                       </Link>
-                      <span className="issue-tag">{issue.category}</span>
+                      <span className="bento-pill scraped">{issue.category}</span>
                     </div>
 
                     <p className="issue-feed-desc">{issue.description}</p>
 
                     {issue.mentionedOrg && (
-                      <p className="issue-mentioned-org">
-                        🏢 Mentions: <strong>{issue.mentionedOrg}</strong>
+                      <p className="issue-mentioned-org" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Building2 size={16} /> Mentions: <strong>{issue.mentionedOrg}</strong>
                       </p>
                     )}
 
@@ -122,18 +119,29 @@ const IssuesPage = () => {
 
                     <div className="issue-feed-footer">
                       <div className="flex items-center gap-4">
-                        <button
-                          className={`upvote-btn ${hasUpvoted ? 'upvoted' : ''}`}
-                          onClick={() => handleUpvote(issue.id)}
-                          title={hasUpvoted ? 'Remove upvote' : 'Upvote this issue'}
-                        >
-                          {hasUpvoted ? '▲ Upvoted' : '△ Upvote'} ({issue.upvoteCount || 0})
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <div className="upvote-btn-wrapper">
+                            <button
+                              className={`action-btn-circ ${hasUpvoted ? 'active' : ''}`}
+                              onClick={() => handleUpvote(issue.id)}
+                              title={hasUpvoted ? 'Remove upvote' : 'Upvote this issue'}
+                              style={{ width: '36px', height: '36px', background: hasUpvoted ? 'var(--secondary)' : '#1e293b', padding: 0, transform: pulsingIds.has(issue.id) ? 'scale(1.2)' : 'scale(1)', transition: 'transform 0.2s ease, background 0.2s ease' }}
+                            >
+                              <ArrowUp size={18} strokeWidth={hasUpvoted ? 3 : 2} color="#fff" />
+                            </button>
+                            {pulsingIds.has(issue.id) && (
+                              <span aria-hidden="true" className="upvote-pulse-ring" />
+                            )}
+                          </div>
+                          <span
+                            className={`upvote-count${pulsingIds.has(issue.id) ? ' upvote-count-pop' : ''}`}
+                          >{issue.upvoteCount || 0}</span>
+                        </div>
                         <span className="issue-status-tag" style={{ color: issue.status === 'Open' ? '#16a34a' : '#ea580c' }}>
                           ● {issue.status || 'Open'}
                         </span>
-                        <Link to={`/issues/${issue.id}`} className="comment-link">
-                          💬 Discuss
+                        <Link to={`/issues/${issue.id}`} className="comment-link" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <MessageSquare size={16} /> Discuss
                         </Link>
                       </div>
                       <span className="reporter-tag">

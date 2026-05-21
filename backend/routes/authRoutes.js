@@ -98,4 +98,35 @@ router.get('/me', authMw, async (req, res) => {
   }
 });
 
+// Update profile
+router.patch('/profile', authMw, async (req, res) => {
+  try {
+    const db = admin.firestore();
+    const userRef = db.collection('users').doc(req.user.id);
+    
+    const userDoc = await userRef.get();
+    if (!userDoc.exists) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    // Filter out protected fields (like password, role)
+    const { password, role, id, ...updateData } = req.body;
+    
+    // Add an updatedAt timestamp
+    updateData.updatedAt = admin.firestore.FieldValue.serverTimestamp();
+
+    await userRef.update(updateData);
+    
+    // Fetch updated user to return
+    const updatedDoc = await userRef.get();
+    const updatedUserData = updatedDoc.data();
+    delete updatedUserData.password;
+
+    res.json({ id: updatedDoc.id, ...updatedUserData });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

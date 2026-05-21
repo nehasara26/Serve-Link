@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Building2, Calendar, MessageSquare, ArrowUp, Send } from 'lucide-react';
+import Navbar from '../components/Navbar';
 
 const MOCK_USERNAMES = ['Volunteer1', 'Volunteer2', 'Volunteer3', 'CommunityHelper', 'Anonymous'];
 
-const IssueDetailPage = () => {
+const IssueDetailPage = ({ user, setAuth }) => {
   const { id } = useParams();
   const [issue, setIssue] = useState(null);
   const [comments, setComments] = useState([]);
   const [loadingIssue, setLoadingIssue] = useState(true);
   const [loadingComments, setLoadingComments] = useState(true);
+  const [isPulsing, setIsPulsing] = useState(false);
+  const navigate = useNavigate();
+
   const [commentForm, setCommentForm] = useState({ username: MOCK_USERNAMES[0], text: '' });
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState('');
@@ -54,6 +59,9 @@ const IssueDetailPage = () => {
         { clientKey },
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
+      // Pulse the button
+      setIsPulsing(true);
+      setTimeout(() => setIsPulsing(false), 500);
       setIssue(res.data);
     } catch (err) {
       console.error('Upvote failed');
@@ -91,30 +99,24 @@ const IssueDetailPage = () => {
   if (error) return <div className="container"><div className="error-banner">{error}</div></div>;
 
   return (
-    <div>
-      {/* Navbar */}
-      <nav className="navbar">
-        <h1 style={{ margin: 0 }}>📋 Issue Detail</h1>
-        <Link to="/issues" className="btn btn-sm" style={{ background: 'rgba(255,255,255,0.2)', border: '1px solid white' }}>
-          ← Community Feed
-        </Link>
-      </nav>
+    <div className="app-container bg-aura-forum">
+      <Navbar user={user} setAuth={setAuth} />
 
       <div className="container" style={{ maxWidth: '760px' }}>
         {/* Issue Card */}
         {issue && (
-          <div className="card">
+          <div className="bento-card" id="details-card">
             <div className="flex justify-between items-center">
               <h2 style={{ margin: 0 }}>{issue.title}</h2>
-              <span className="issue-tag">{issue.category}</span>
+              <span className="bento-pill scraped">{issue.category}</span>
             </div>
 
             <div style={{ marginTop: '8px', marginBottom: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap', fontSize: '14px', color: 'var(--text-light)' }}>
-              <span style={{ color: issue.status === 'Open' ? '#16a34a' : '#ea580c', fontWeight: '600' }}>
-                ● {issue.status || 'Open'}
+              <span style={{ color: issue.status === 'Open' ? '#16a34a' : '#ea580c', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span className="issue-status-tag" style={{ color: issue.status === 'Open' ? '#16a34a' : '#ea580c', margin: 0, padding: 0, display: 'inline' }}>●</span> {issue.status || 'Open'}
               </span>
-              {issue.mentionedOrg && <span>🏢 {issue.mentionedOrg}</span>}
-              <span>📅 {formatDate(issue.createdAt)}</span>
+              {issue.mentionedOrg && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Building2 size={14} /> {issue.mentionedOrg}</span>}
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Calendar size={14} /> {formatDate(issue.createdAt)}</span>
               <span>Reported by: {issue.reporterName || 'Volunteer'}</span>
             </div>
 
@@ -128,20 +130,25 @@ const IssueDetailPage = () => {
               />
             )}
 
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
-              <button
-                className={`upvote-btn ${hasUpvoted ? 'upvoted' : ''}`}
-                onClick={handleUpvote}
-              >
-                {hasUpvoted ? '▲ Upvoted' : '△ Upvote'} — {issue.upvoteCount || 0} votes
-              </button>
+            <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div className="upvote-btn-wrapper">
+                <button
+                  className={`action-btn-circ ${hasUpvoted ? 'active' : ''}`}
+                  onClick={handleUpvote}
+                  style={{ width: '40px', height: '40px', background: hasUpvoted ? 'var(--secondary)' : '#1e293b', transform: isPulsing ? 'scale(1.2)' : 'scale(1)', transition: 'transform 0.2s ease, background 0.2s ease' }}
+                >
+                  <ArrowUp size={20} color="#fff" />
+                </button>
+                {isPulsing && <span aria-hidden="true" className="upvote-pulse-ring upvote-pulse-ring--lg" />}
+              </div>
+              <span className={`upvote-count${isPulsing ? ' upvote-count-pop' : ''}`}>{issue.upvoteCount || 0} votes</span>
             </div>
           </div>
         )}
 
         {/* Comment Thread */}
-        <div className="card">
-          <h3 style={{ marginTop: 0 }}>💬 Community Discussion</h3>
+        <div className="bento-card">
+          <h3 style={{ marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><MessageSquare size={20} /> Community Discussion</h3>
           <p style={{ color: 'var(--text-light)', fontSize: '14px', marginTop: '-8px' }}>
             Coordinate volunteers, event dates, and resources below.
           </p>
@@ -191,8 +198,8 @@ const IssueDetailPage = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn" disabled={posting}>
-              {posting ? 'Posting...' : '💬 Post Comment'}
+            <button type="submit" className="action-btn-circ" disabled={posting} style={{ width: '48px', height: '48px', marginTop: '12px', background: '#1e293b' }}>
+              <Send size={24} color="#fff" />
             </button>
           </form>
         </div>

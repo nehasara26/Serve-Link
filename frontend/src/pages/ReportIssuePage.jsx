@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { Send } from 'lucide-react';
+import Navbar from '../components/Navbar';
 
 const MOCK_USERNAMES = ['Anonymous', 'Volunteer1', 'Volunteer2', 'Volunteer3', 'CommunityHelper'];
 
-const ReportIssuePage = () => {
+const ReportIssuePage = ({ user, setAuth }) => {
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -85,17 +88,11 @@ const ReportIssuePage = () => {
   };
 
   return (
-    <div>
-      {/* Navbar */}
-      <nav className="navbar">
-        <h1 style={{ margin: 0 }}>📢 Report an Issue</h1>
-        <Link to="/issues" className="btn btn-sm" style={{ background: 'rgba(255,255,255,0.2)', border: '1px solid white' }}>
-          ← Community Feed
-        </Link>
-      </nav>
+    <div className="app-container bg-aura-forum">
+      <Navbar user={user} setAuth={setAuth} />
 
       <div className="container" style={{ maxWidth: '640px' }}>
-        <div className="card">
+        <div className="bento-card">
           <p style={{ color: 'var(--text-light)', marginTop: 0 }}>
             Spotted a community issue? Report it here to alert NGOs and volunteers. Issues are sorted by community upvotes.
           </p>
@@ -179,14 +176,17 @@ const ReportIssuePage = () => {
               )}
             </div>
 
-            <button
-              type="submit"
-              className="btn"
-              style={{ width: '100%', marginTop: '8px' }}
-              disabled={submitting}
-            >
-              {uploading ? 'Uploading Image...' : submitting ? 'Submitting...' : '📢 Submit Report'}
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
+              <button
+                type="submit"
+                className="action-btn-circ"
+                disabled={submitting}
+                style={{ width: '48px', height: '48px', background: '#1e293b' }}
+                title="Submit Report"
+              >
+                {uploading || submitting ? <span className="spinner" style={{ width: '20px', height: '20px', borderTopColor: '#fff', borderRightColor: '#fff' }} /> : <Send size={24} color="#fff" />}
+              </button>
+            </div>
           </form>
         </div>
       </div>

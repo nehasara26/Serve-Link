@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { HandHeart, Building2, Pointer } from 'lucide-react';
+import logo from '../assets/ServeLink logo.svg';
 
 /* ─── Skill & cause options ─────────────────────────────── */
 const SKILL_OPTIONS = [
@@ -44,9 +46,9 @@ function ChipGroup({ options, selected, onChange, color = '#2563eb' }) {
             style={{
               padding: '5px 14px',
               borderRadius: '20px',
-              border: `1.5px solid ${active ? color : '#cbd5e1'}`,
+              border: `1.5px solid ${active ? color : 'var(--border)'}`,
               background: active ? color : 'transparent',
-              color: active ? '#fff' : '#64748b',
+              color: active ? '#fff' : 'var(--text-secondary)',
               fontSize: '12px',
               fontWeight: 600,
               cursor: 'pointer',
@@ -114,7 +116,6 @@ const Register = ({ setAuth }) => {
   /* ── Styles ── */
   const pageStyle = {
     minHeight: '100vh',
-    background: '#FFFBF9',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -131,34 +132,37 @@ const Register = ({ setAuth }) => {
   };
 
   const bentoCard = (active, accent) => ({
-    background: active ? accent : '#fff',
-    border: `1.5px solid ${active ? accent : '#F3F4F6'}`,
-    borderRadius: '24px',
+    background: active ? accent : 'var(--card-bg)',
+    backdropFilter: 'blur(25px)',
+    border: `1px solid ${active ? accent : 'var(--border)'}`,
+    borderRadius: '16px',
     padding: '40px 32px',
     cursor: 'pointer',
     textAlign: 'center',
     transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-    boxShadow: active ? `0 12px 30px ${accent}22` : '0 4px 12px rgba(0,0,0,0.03)',
+    boxShadow: active ? `0 12px 30px ${accent}22` : 'var(--shadow-subtle)',
     transform: active ? 'translateY(-6px)' : 'translateY(0)',
   });
 
   const formCard = {
-    background: '#fff',
-    borderRadius: '24px',
+    background: 'var(--card-bg)',
+    backdropFilter: 'blur(25px)',
+    WebkitBackdropFilter: 'blur(25px)',
+    borderRadius: '16px',
     padding: '44px 48px',
     width: '100%',
     maxWidth: '580px',
-    boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
+    boxShadow: 'var(--shadow-lift)',
     marginTop: '40px',
     animation: 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-    border: '1px solid #F3F4F6',
+    border: '1px solid var(--border)',
   };
 
   const labelStyle = {
     display: 'block',
     fontSize: '13px',
     fontWeight: 700,
-    color: '#475569',
+    color: 'var(--text-primary)',
     marginBottom: '6px',
     marginTop: '16px',
   };
@@ -166,12 +170,13 @@ const Register = ({ setAuth }) => {
   const inputStyle = {
     width: '100%',
     padding: '10px 14px',
-    border: '1.5px solid #e2e8f0',
+    border: '1.5px solid var(--border)',
     borderRadius: '10px',
     fontSize: '14px',
     outline: 'none',
     transition: 'border-color 0.2s',
-    background: '#f8fafc',
+    background: 'var(--input-bg)',
+    color: 'var(--text-primary)',
     boxSizing: 'border-box',
   };
 
@@ -195,13 +200,14 @@ const Register = ({ setAuth }) => {
   const ORG_COLOR = '#FF6B6B';
 
   return (
-    <div style={pageStyle}>
+    <div className="app-container bg-aura-forum" style={pageStyle}>
       {/* Header */}
       <div style={{ textAlign: 'center' }}>
-        <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: 800, color: '#1e293b' }}>
-          Join Serve-Link
+        <img src={logo} alt="ServeLink logo" style={{ height: '80px', marginBottom: '16px' }} />
+        <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+          Join ServeLink
         </h1>
-        <p style={{ color: '#64748b', marginTop: '8px', fontSize: '15px' }}>
+        <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '15px' }}>
           Choose how you'd like to make a difference
         </p>
       </div>
@@ -210,11 +216,11 @@ const Register = ({ setAuth }) => {
       <div style={bentoWrap}>
         {/* Volunteer card */}
         <div onClick={() => setRole('Volunteer')} style={bentoCard(role === 'Volunteer', VOL_COLOR)}>
-          <div style={{ fontSize: '2.8rem', marginBottom: '12px' }}>🙋</div>
-          <h3 style={{ margin: '0 0 8px', color: role === 'Volunteer' ? '#fff' : '#1e293b', fontSize: '18px', fontWeight: 800 }}>
+          <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center', color: role === 'Volunteer' ? '#fff' : 'var(--text-primary)' }}><HandHeart size={48} strokeWidth={1.5} /></div>
+          <h3 style={{ margin: '0 0 8px', color: role === 'Volunteer' ? '#fff' : 'var(--text-primary)', fontSize: '18px', fontWeight: 800 }}>
             Volunteer
           </h3>
-          <p style={{ margin: 0, fontSize: '13px', color: role === 'Volunteer' ? 'rgba(255,255,255,0.85)' : '#64748b', lineHeight: 1.5 }}>
+          <p style={{ margin: 0, fontSize: '13px', color: role === 'Volunteer' ? 'rgba(255,255,255,0.85)' : 'var(--text-secondary)', lineHeight: 1.5 }}>
             Offer your skills and time to causes you care about
           </p>
           {role === 'Volunteer' && (
@@ -226,11 +232,11 @@ const Register = ({ setAuth }) => {
 
         {/* Organization card */}
         <div onClick={() => setRole('Organization')} style={bentoCard(role === 'Organization', ORG_COLOR)}>
-          <div style={{ fontSize: '2.8rem', marginBottom: '12px' }}>🏢</div>
-          <h3 style={{ margin: '0 0 8px', color: role === 'Organization' ? '#fff' : '#1e293b', fontSize: '18px', fontWeight: 800 }}>
+          <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center', color: role === 'Organization' ? '#fff' : 'var(--text-primary)' }}><Building2 size={48} strokeWidth={1.5} /></div>
+          <h3 style={{ margin: '0 0 8px', color: role === 'Organization' ? '#fff' : 'var(--text-primary)', fontSize: '18px', fontWeight: 800 }}>
             Organization
           </h3>
-          <p style={{ margin: 0, fontSize: '13px', color: role === 'Organization' ? 'rgba(255,255,255,0.85)' : '#64748b', lineHeight: 1.5 }}>
+          <p style={{ margin: 0, fontSize: '13px', color: role === 'Organization' ? 'rgba(255,255,255,0.85)' : 'var(--text-secondary)', lineHeight: 1.5 }}>
             Post opportunities and connect with passionate volunteers
           </p>
           {role === 'Organization' && (
@@ -245,10 +251,10 @@ const Register = ({ setAuth }) => {
       {role === 'Volunteer' && (
         <div style={formCard}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-            <span style={{ fontSize: '1.6rem' }}>🙋</span>
+            <HandHeart size={28} color={VOL_COLOR} strokeWidth={2} />
             <h2 style={{ margin: 0, color: VOL_COLOR, fontWeight: 800, fontSize: '1.35rem' }}>Volunteer Registration</h2>
           </div>
-          <p style={{ color: '#94a3b8', fontSize: '13px', margin: '4px 0 20px' }}>Tell us about yourself</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: '4px 0 20px' }}>Tell us about yourself</p>
 
           {errorMsg && <div style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', marginBottom: '12px' }}>{errorMsg}</div>}
 
@@ -271,11 +277,11 @@ const Register = ({ setAuth }) => {
             </div>
 
             <label style={labelStyle}>Skills</label>
-            <p style={{ margin: '0 0 6px', fontSize: '12px', color: '#94a3b8' }}>Select all that apply</p>
+            <p style={{ margin: '0 0 6px', fontSize: '12px', color: 'var(--text-secondary)' }}>Select all that apply</p>
             <ChipGroup options={SKILL_OPTIONS} selected={vForm.skills} onChange={(v) => setVForm({ ...vForm, skills: v })} color={VOL_COLOR} />
 
             <label style={labelStyle}>Interest Causes</label>
-            <p style={{ margin: '0 0 6px', fontSize: '12px', color: '#94a3b8' }}>What causes do you care about?</p>
+            <p style={{ margin: '0 0 6px', fontSize: '12px', color: 'var(--text-secondary)' }}>What causes do you care about?</p>
             <ChipGroup options={CAUSE_OPTIONS} selected={vForm.causes} onChange={(v) => setVForm({ ...vForm, causes: v })} color={VOL_COLOR} />
 
             <button type="submit" disabled={loading} style={submitBtn(VOL_COLOR)}>
@@ -283,7 +289,7 @@ const Register = ({ setAuth }) => {
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', marginTop: '18px', fontSize: '13px', color: '#64748b' }}>
+          <p style={{ textAlign: 'center', marginTop: '18px', fontSize: '13px', color: 'var(--text-secondary)' }}>
             Already have an account?{' '}
             <Link to="/login" style={{ color: VOL_COLOR, fontWeight: 700 }}>Sign in</Link>
           </p>
@@ -294,10 +300,10 @@ const Register = ({ setAuth }) => {
       {role === 'Organization' && (
         <div style={formCard}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-            <span style={{ fontSize: '1.6rem' }}>🏢</span>
+            <Building2 size={28} color={ORG_COLOR} strokeWidth={2} />
             <h2 style={{ margin: 0, color: ORG_COLOR, fontWeight: 800, fontSize: '1.35rem' }}>Organization Registration</h2>
           </div>
-          <p style={{ color: '#94a3b8', fontSize: '13px', margin: '4px 0 20px' }}>Set up your organization profile</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: '4px 0 20px' }}>Set up your organization profile</p>
 
           {errorMsg && <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', marginBottom: '12px' }}>{errorMsg}</div>}
 
@@ -370,7 +376,7 @@ const Register = ({ setAuth }) => {
 
             {/* Focus sectors */}
             <label style={labelStyle}>Focus Sectors</label>
-            <p style={{ margin: '0 0 6px', fontSize: '12px', color: '#94a3b8' }}>Select the areas your org operates in</p>
+            <p style={{ margin: '0 0 6px', fontSize: '12px', color: 'var(--text-secondary)' }}>Select the areas your org operates in</p>
             <ChipGroup options={SECTOR_OPTIONS} selected={oForm.sectors} onChange={(v) => setOForm({ ...oForm, sectors: v })} color={ORG_COLOR} />
 
             <button type="submit" disabled={loading} style={submitBtn(ORG_COLOR)}>
@@ -378,7 +384,7 @@ const Register = ({ setAuth }) => {
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', marginTop: '18px', fontSize: '13px', color: '#64748b' }}>
+          <p style={{ textAlign: 'center', marginTop: '18px', fontSize: '13px', color: 'var(--text-secondary)' }}>
             Already have an account?{' '}
             <Link to="/login" style={{ color: ORG_COLOR, fontWeight: 700 }}>Sign in</Link>
           </p>
@@ -387,15 +393,15 @@ const Register = ({ setAuth }) => {
 
       {/* No role selected yet */}
       {!role && (
-        <p style={{ color: '#94a3b8', marginTop: '24px', fontSize: '14px' }}>
-          👆 Pick a role above to get started
+        <p style={{ color: 'var(--text-secondary)', marginTop: '24px', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Pointer size={16} /> Pick a role above to get started
         </p>
       )}
 
       {/* Sign-in link */}
-      <p style={{ color: '#64748b', marginTop: '24px', fontSize: '13px' }}>
+      <p style={{ color: 'var(--text-secondary)', marginTop: '24px', fontSize: '13px' }}>
         Already have an account?{' '}
-        <Link to="/login" style={{ color: '#2563eb', fontWeight: 700 }}>Sign in here</Link>
+        <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 700 }}>Sign in here</Link>
       </p>
 
       {/* Slide-up animation */}
@@ -404,7 +410,7 @@ const Register = ({ setAuth }) => {
           from { opacity: 0; transform: translateY(24px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        select option { background: #fff; }
+        select option { background: var(--card-bg); color: var(--text-primary); }
       `}</style>
     </div>
   );

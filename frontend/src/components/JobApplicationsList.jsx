@@ -42,9 +42,9 @@ const JobApplicationsList = ({ jobId, onClose, onStatusUpdate }) => {
     <div style={{
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
       background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center',
-      justifyContent: 'center', zIndex: 1000, padding: '20px'
+      justifyContent: 'center', zIndex: 2000, padding: '20px'
     }}>
-      <div className="card" style={{ width: '100%', maxWidth: '700px', maxHeight: '90vh', overflowY: 'auto', margin: 0 }}>
+      <div className="bento-card" style={{ width: '100%', maxWidth: '700px', maxHeight: '90vh', overflowY: 'auto', margin: 0 }}>
         <div className="flex justify-between items-center" style={{ marginBottom: '20px' }}>
           <h2 style={{ margin: 0 }}>Applicants</h2>
           <button onClick={onClose} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--text-light)' }}>&times;</button>
@@ -67,10 +67,7 @@ const JobApplicationsList = ({ jobId, onClose, onStatusUpdate }) => {
                     <div className="issue-feed-desc" style={{ marginBottom: '12px', fontStyle: 'italic' }}>
                       "{app.message || 'No message provided.'}"
                     </div>
-                    <span className={`badge ${
-                      app.status === 'accepted' ? 'badge-platform' : 
-                      app.status === 'rejected' ? 'btn-danger' : ''
-                    }`} style={{ fontSize: '10px', padding: '2px 8px', background: app.status === 'rejected' ? '#fee2e2' : '', color: app.status === 'rejected' ? '#991b1b' : '' }}>
+                    <span className={`bento-pill ${app.status === 'accepted' ? 'org' : app.status === 'rejected' ? 'urgent' : 'scraped'}`} style={{ fontSize: '10px', padding: '2px 8px', background: app.status === 'rejected' ? '#fee2e2' : '', color: app.status === 'rejected' ? '#991b1b' : '' }}>
                       {app.status.toUpperCase()}
                     </span>
                   </div>

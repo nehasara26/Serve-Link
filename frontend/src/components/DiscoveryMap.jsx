@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { Link } from 'react-router-dom';
+import { MapPin } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -105,7 +106,10 @@ const DiscoveryMap = () => {
       {userLocation && (
         <Marker position={userLocation}>
           <Popup>
-            <strong>📍 Your Location</strong>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <MapPin size={16} />
+              <strong>Your Location</strong>
+            </div>
           </Popup>
         </Marker>
       )}
@@ -116,7 +120,7 @@ const DiscoveryMap = () => {
           <Popup>
             <div style={{ minWidth: '180px' }}>
               <strong style={{ fontSize: '14px', color: '#1e40af' }}>{ngo.name}</strong>
-              <p style={{ margin: '4px 0', fontSize: '12px', color: '#64748b' }}>📍 {ngo.area}</p>
+              <p style={{ margin: '4px 0', fontSize: '12px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '4px' }}><MapPin size={14} /> {ngo.area}</p>
               <div style={{ marginBottom: '8px' }}>
                 {ngo.tags.map(tag => (
                   <span key={tag} style={{

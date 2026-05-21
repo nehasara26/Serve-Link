@@ -45,9 +45,9 @@ const CreateJobModal = ({ onClose, onJobCreated }) => {
     <div style={{
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
       background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center',
-      justifyContent: 'center', zIndex: 1000, padding: '20px'
+      justifyContent: 'center', zIndex: 2000, padding: '20px'
     }}>
-      <div className="card" style={{ width: '100%', maxWidth: '500px', margin: 0 }}>
+      <div className="bento-card" style={{ width: '100%', maxWidth: '500px', margin: 0 }}>
         <div className="flex justify-between items-center" style={{ marginBottom: '20px' }}>
           <h2 style={{ margin: 0 }}>Post New Opportunity</h2>
           <button onClick={onClose} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--text-light)' }}>&times;</button>

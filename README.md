@@ -50,9 +50,9 @@ We bring together **location, data, and community collaboration** to make volunt
 
 * Browse tasks like:
 
-  * Meal distribution 🍱
-  * Maintenance work 🔧
-  * Caretaking ❤️
+  * Meal distribution
+  * Maintenance work
+  * Caretaking
 * Includes deadlines and requirements
 * Supports **auto-imported listings from NGO websites**
 
@@ -80,8 +80,8 @@ Example:
 ### 👍 5. Upvote-Based Prioritization
 
 * Community can upvote issues
-* Most urgent problems rise to the top
-* Ensures attention goes where it’s needed most
+* Most urgent problems rise up to the top
+* Ensures attention goes where it’s needed the most
 
 ---
 
